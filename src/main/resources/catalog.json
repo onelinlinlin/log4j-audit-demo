@@ -1,0 +1,136 @@
+{
+  "products" : [ {
+    "name" : "banking",
+    "displayName" : "Banking",
+    "description" : "Simple bank operation",
+    "events" : [ "login", "transfer", "deposit"]
+  } ],
+  "categories" : [ {
+    "name" : "account",
+    "displayName" : "Account",
+    "description" : "Events related to accounts",
+    "events" : [ "transfer", "deposit"]
+  }],
+  "events" : [ {
+    "name" : "login",
+    "displayName" : "Login",
+    "description" : "User Login",
+    "aliases" : null,
+    "attributes" : [{"name" : "username", "required" : false}]
+  }, {
+    "name" : "transfer",
+    "displayName" : "Transfer",
+    "description" : "Transfer between user",
+    "aliases" : null,
+    "attributes" : [ {"name" : "toUser", "required" : true}, {"name" : "fromUser", "required" : true},
+      {"name" :"amount", "required" : true} ]
+  }, {
+    "name" : "deposit",
+    "displayName" : "Deposit",
+    "description" : "Deposit funds",
+    "aliases" : null,
+    "attributes" : [ {"name" : "userid", "required" : true}, {"name" : "amount", "required" : true},{"name": "username","required": true} ]
+  }],
+  "attributes" : [ {
+    "name" : "ipAddress",
+    "displayName" : "IP Address",
+    "description" : "IP Address of the caller",
+    "dataType" : "STRING",
+    "indexed" : true,
+    "sortable" : true,
+    "required" : false,
+    "requestContext" : true,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : [ {
+      "constraintType" : {
+        "name" : "pattern"
+      },
+      "value" : "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
+    } ]
+  }, {
+    "name" : "userId",
+    "displayName" : "UserId",
+    "description" : "Id of the User",
+    "dataType" : "INT",
+    "indexed" : true,
+    "sortable" : true,
+    "required" : false,
+    "requestContext" : true,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : null
+  },{
+    "name" : "hostName",
+    "displayName" : "Host Name",
+    "description" : "Name of the server",
+    "dataType" : "STRING",
+    "indexed" : true,
+    "sortable" : true,
+    "required" : false,
+    "requestContext" : true,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : null
+  }, {
+    "name" : "toUser",
+    "displayName" : "Transfer recipient",
+    "description" : "Transfer money to sb",
+    "dataType" : "STRING",
+    "indexed" : false,
+    "sortable" : false,
+    "required" : true,
+    "requestContext" : false,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : null
+  }, {
+    "name" : "fromUser",
+    "displayName" : "Transfer Initiator",
+    "description" : "Source of funds",
+    "dataType" : "STRING",
+    "indexed" : false,
+    "sortable" : false,
+    "required" : true,
+    "requestContext" : false,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : null
+  }, {
+    "name" : "amount",
+    "displayName" : "Amount",
+    "description" : "amount",
+    "dataType" : "INT",
+    "indexed" : false,
+    "sortable" : false,
+    "required" : true,
+    "requestContext" : false,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : null
+  }, {
+    "name" : "userid",
+    "displayName" : "userid",
+    "description" : "ID of User",
+    "dataType" : "INT",
+    "indexed" : false,
+    "sortable" : false,
+    "required" : true,
+    "requestContext" : false,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : null
+  }, {
+    "name" : "username",
+    "displayName" : "username",
+    "description" : "Name of User",
+    "dataType" : "STRING",
+    "indexed" : false,
+    "sortable" : false,
+    "required" : true,
+    "requestContext" : false,
+    "examples" : null,
+    "aliases" : null,
+    "constraints" : null
+  } ]
+}

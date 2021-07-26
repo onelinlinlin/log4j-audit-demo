@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--status:Log4j2内部日志的输出级别,设置为TRACE对学习Log4j2非常有用 -->
+<!--monitorInterval:定时检测配置文件的修改,有变化则自动重新加载配置,时间单位为秒,最小间隔为5s -->
+<Configuration status="WARN" monitorInterval="600">
+  <!--properties:设置全局变量 -->
+  <properties>
+    <!--LOG_HOME:指定当前日志存放的目录 -->
+    <property name="LOG_HOME">D:\软件设计模式课设\DPCS\logs</property>
+  </properties>
+
+  <!--标记过滤器 只接受Audit和Flow的日志-->
+  <MarkerFilter marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+  <MarkerFilter marker="Audit" onMatch="ACCEPT" onMisMatch="NEUTRAL"/>
+
+  <!--Appenders:定义日志输出目的地，内容和格式等 -->
+  <Appenders>
+    <!--RollingFile:日志输出到文件,下面的文件都使用相对路径 -->
+    <!--fileName:当前日志输出的文件名称 -->
+    <!--filePattern:备份日志文件名称，备份目录为logs下面以年月命名的目录，备份时使用gz格式压缩 -->
+    <RollingFile name="audit" fileName="${LOG_HOME}/audit.log" filePattern="${LOG_HOME}/archive/audit.log.%d{yyyyMMdd_HHmmss}-%i">
+      <!--在日志审计项目中收集各个设备的系统信息，利用syslog日志进行日志的采集、接收、转发，因在多网络段转发日志时需要获取 各个转发设备主机名/主机IP地址的，所以接入Syslog-ng日志-->
+      <!--数据格式是RFC5424 这里使用RFC5424Layout-->
+      <RFC5424Layout includeMDC="true" mdcId="RequestContext" appName="BANK" mdcPrefix="" newLine="true"/>
+      <Policies>
+        <!--SizeBasedTriggeringPolicy:日志文件按照大小备份 -->
+        <!--size:指定日志文件最大为100MB，单位可以为KB、MB或GB -->
+        <SizeBasedTriggeringPolicy size="30 MB"/>
+      </Policies>
+      <!--DefaultRolloverStrategy:翻转策略决定如何执行备份 -->
+      <!--max:最多保存20个备份文件，结合时间使用后，在每个时间段内最多有20个备份，多出来的会被覆盖 -->
+      <DefaultRolloverStrategy min="1" max="20">
+        <Delete basePath="${LOG_HOME}">
+          <!--IfFileName:匹配文件名称 -->
+          <!--glob:匹配2级目录深度下的以.log结尾的备份文件 -->
+          <IfFileName glob="audit.log.*">
+            <!--IfLastModified:匹配文件修改时间 -->
+            <!--age:匹配超过180天的文件，单位D、H、M、S分别表示天、小时、分钟、秒-->
+            <IfAccumulatedFileSize exceeds="1 GB"/>
+          </IfFileName>
+        </Delete>
+      </DefaultRolloverStrategy>
+    </RollingFile>
+  </Appenders>
+
+  <!--Loggers:定义日志级别和使用的Appenders -->
+  <Loggers>
+    <!--name: 打印日志的类的包路径 -->
+    <!--additivity: true当前的Logger打印的日志附加到Root，false仅仅打印到RollingFile -->
+    <Logger name="org.apache.logging.log4j.audit" level="info" additivity="false">
+      <AppenderRef ref="log4j"/>
+    </Logger>
+    <Logger name="AuditLogger" level="trace" additivity="false">
+      <AppenderRef ref="audit"/>
+    </Logger>
+    <!--Root:日志默认打印到控制台 -->
+    <!--level日志级别: ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
+    <Root level="warn">
+      <AppenderRef ref="log4j" />
+    </Root>
+  </Loggers>
+
+</Configuration>
